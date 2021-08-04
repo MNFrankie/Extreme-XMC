@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<script name="Create ACL">
+    <abortOnError>true</abortOnError>
+    <auditLogEnabled></auditLogEnabled>
+    <category>,Config,</category>
+    <comments>This deletes the IPv4 ACL rule from an existing IPv4 ACL.</comments>
+    <content>from xmclib import emc_vars
+from xmclib import logger
+from xmclib import cli
+from device import api
+from device.deviceutils import DeviceUtils
+
+
+device_ip = emc_vars["deviceIP"]
+try:
+    fmly = DeviceUtils.get_device_family(device_ip)
+    print "## Device Family = " + fmly    
+    acl_name = emc_vars["acl_name"]
+    seq_id = emc_vars["seq_id"]    
+   
+    result = api.acl.delete_ipv4_rule_acl(acl_name=acl_name,seq_id=seq_id)
+    if result == None:
+        emc_results.setErrorMessage("Configuration error")
+        emc_results.setStatus(emc_results.Status.ERROR)
+    else:
+        emc_results.setStatus(emc_results.Status.SUCCESS)        
+except Exception as ex:
+    print "## Got exception. " + str(ex)
+    emc_results.put('failed_device', device_ip)
+    emc_results.put('wf_err_msg', str(ex))
+    emc_results.setErrorMessage("Got exception. " + str(ex))
+    emc_results.setStatus(emc_results.Status.ERROR)
+
+</content>
+    <creator>system</creator>
+    <defaultCategory></defaultCategory>
+    <devicesRequired>true</devicesRequired>
+    <encoded>false</encoded>
+    <contexts></contexts>
+    <lastUpdateDate>1614105032000</lastUpdateDate>
+    <lastUpdatedBy>system</lastUpdatedBy>
+    <miscXMLData></miscXMLData>
+    <nosIds>,nos-id-slx,nos-id-slx-r,nos-id-slx-s,</nosIds>
+    <postprocessScript></postprocessScript>
+    <rollbackScript></rollbackScript>
+    <saveConfigOnExit>false</saveConfigOnExit>
+    <scriptOwner></scriptOwner>
+    <scriptTimeout>60</scriptTimeout>
+    <scriptType>Python</scriptType>
+    <supprotedGroups></supprotedGroups>
+    <roles>,NetSight Administrator,</roles>
+    <vendor></vendor>
+    <version>0</version>
+</script>
+

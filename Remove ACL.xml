@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<script name="Remove ACL">
+    <abortOnError>true</abortOnError>
+    <auditLogEnabled></auditLogEnabled>
+    <category>,Config,</category>
+    <comments>This removes an ACL from physical port, port channel, VE or mgmt interface.</comments>
+    <content>from xmclib import emc_vars
+from xmclib import logger
+from xmclib import cli
+from device import api
+from device.deviceutils import DeviceUtils
+
+
+device_ip = emc_vars["deviceIP"]
+try:
+    fmly = DeviceUtils.get_device_family(device_ip)
+    print "## Device Family = " + fmly    
+    acl_name = emc_vars["acl_name"]
+    acl_direction = emc_vars["acl_direction"]
+    port_list = emc_vars["ports"]
+    rbridge_id = emc_vars["rbridge_id"]
+    
+   
+    result = api.acl.remove_acl(rbridge_id=rbridge_id,acl_name=acl_name,acl_direction=acl_direction,port_list=port_list)
+    if result == None:
+        emc_results.setErrorMessage("Configuration error")
+        emc_results.setStatus(emc_results.Status.ERROR)
+    else:
+        emc_results.setStatus(emc_results.Status.SUCCESS)        
+except Exception as ex:
+    print "## Got exception. " + str(ex)
+    emc_results.put('failed_device', device_ip)
+    emc_results.put('wf_err_msg', str(ex))
+    emc_results.setErrorMessage("Got exception. " + str(ex))
+    emc_results.setStatus(emc_results.Status.ERROR)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</content>
+    <creationDate>1550746443469</creationDate>
+    <creator>system</creator>
+    <defaultCategory></defaultCategory>
+    <devicesRequired>true</devicesRequired>
+    <encoded>false</encoded>
+    <contexts></contexts>
+    <lastUpdateDate>1614105032000</lastUpdateDate>
+    <lastUpdatedBy>system</lastUpdatedBy>
+    <miscXMLData></miscXMLData>
+    <nosIds>,nos-id-slx,nos-id-slx-r,nos-id-slx-s,</nosIds>
+    <postprocessScript></postprocessScript>
+    <rollbackScript></rollbackScript>
+    <saveConfigOnExit>false</saveConfigOnExit>
+    <scriptOwner></scriptOwner>
+    <scriptTimeout>60</scriptTimeout>
+    <scriptType>Python</scriptType>
+    <supprotedGroups></supprotedGroups>
+    <roles>,NetSight Administrator,</roles>
+    <vendor></vendor>
+    <version>0</version>
+</script>
+

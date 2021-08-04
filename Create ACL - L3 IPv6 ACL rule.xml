@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<script name="Create ACL">
+    <abortOnError>true</abortOnError>
+    <auditLogEnabled></auditLogEnabled>
+    <category>,Config,</category>
+    <comments>This adds an L3 IPv6 ACL rule to an existing ACL.</comments>
+    <content>from xmclib import emc_vars
+from xmclib import logger
+from xmclib import cli
+from device import api
+from device.deviceutils import DeviceUtils
+
+
+device_ip = emc_vars["deviceIP"]
+try:
+    fmly = DeviceUtils.get_device_family(device_ip)
+    print "## Device Family = " + fmly    
+    acl_name = emc_vars["acl_name"]
+    seq_id = emc_vars["seq_id"]
+    action = emc_vars["action"]
+    source= emc_vars["source"]
+    protocol_type = emc_vars["protocol_type"]
+    destination = emc_vars["destination"]
+    dscp = emc_vars["dscp"]
+    urg = emc_vars["urg"]
+    ack = emc_vars["ack"]
+    push = emc_vars["push"]
+    fin = emc_vars["fin"]
+    rst = emc_vars["rst"]
+    sync = emc_vars["sync"]
+    count = emc_vars["count"]
+    log = emc_vars["log"]
+    mirror = emc_vars["mirror"]
+    copy_sflow = emc_vars["copy_sflow"]
+    acl_rules = emc_vars["acl_rules"]
+   
+    result = api.acl.add_ipv6_rule_acl(acl_name=acl_name,seq_id=seq_id,action=action,source=source,protocol_type=protocol_type,destination=destination,dscp=dscp,urg=urg,ack=ack,push=push,fin=fin,rst=rst,sync=sync,count=count,log=log,mirror=mirror,copy_sflow=copy_sflow,acl_rules=acl_rules)
+    if result == None:
+        emc_results.setErrorMessage("Configuration error")
+        emc_results.setStatus(emc_results.Status.ERROR)
+    else:
+        emc_results.setStatus(emc_results.Status.SUCCESS)        
+except Exception as ex:
+    print "## Got exception. " + str(ex)
+    emc_results.put('failed_device', device_ip)
+    emc_results.put('wf_err_msg', str(ex))
+    emc_results.setErrorMessage("Got exception. " + str(ex))
+    emc_results.setStatus(emc_results.Status.ERROR)
+
+</content>
+    <creator>system</creator>
+    <defaultCategory></defaultCategory>
+    <devicesRequired>true</devicesRequired>
+    <encoded>false</encoded>
+    <contexts></contexts>
+    <lastUpdateDate>1614105032000</lastUpdateDate>
+    <lastUpdatedBy>system</lastUpdatedBy>
+    <miscXMLData></miscXMLData>
+    <nosIds>,nos-id-slx,nos-id-slx-r,nos-id-slx-s,</nosIds>
+    <postprocessScript></postprocessScript>
+    <rollbackScript></rollbackScript>
+    <saveConfigOnExit>false</saveConfigOnExit>
+    <scriptOwner></scriptOwner>
+    <scriptTimeout>60</scriptTimeout>
+    <scriptType>Python</scriptType>
+    <supprotedGroups></supprotedGroups>
+    <roles>,NetSight Administrator,</roles>
+    <vendor></vendor>
+    <version>0</version>
+</script>
+
